@@ -25,11 +25,13 @@ const map = new Vue({
   },
   methods: {
     openInfoWindow: function (camera) {
+      const streamUrl = encodeURIComponent(camera.rtspVideoUrl)
+
       this.infoWindows.push({
         options: {
           content: `
             <h1>${camera.description}<h1>
-            <img src="/api/stream/test/">
+            <img src="/api/stream?streamUrl=${streamUrl}">
           `
         },
         position: camera.location.coordinates[0]

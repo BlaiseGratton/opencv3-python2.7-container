@@ -13,7 +13,8 @@ from vehicle_counter import VehicleCounter
 def get_feed_url(server, camera):
     return 'rtmp://8.15.251.{}:1935/rtplive/R3_{}'.format(server, camera)
 
-url = get_feed_url('103', '033')
+
+default_url = get_feed_url('103', '033')
 
 WAIT_TIME = 1
 IMAGE_DIR = 'images'
@@ -172,7 +173,7 @@ def process_frame(frame_number, frame, bg_subtractor, car_counter):
 # =========================================================================== #
 
 
-def main():
+def main(url=default_url):
     log = logging.getLogger('main')
 
     log.debug('Creating backgound subtractor')
@@ -184,6 +185,7 @@ def main():
     car_counter = None
 
     log.debug('Initializing video capture device #%s')
+
     cap = cv2.VideoCapture(url)
 
     frame_width = cap.get(cv2.CAP_PROP_FRAME_WIDTH)
@@ -229,10 +231,19 @@ def main():
             if c == 27:
                 break
         else:
-            cv2.imwrite('temp.jpg', processed)
-            yield (b'--frame\r\n'
-                   b'Content-Type: image/jpeg\r\n\r\n' +
-                   open('temp.jpg', 'rb').read() + b'\r\n')
+            # os.remove('temp.jpg')
+            # cv2.imwrite('temp.jpg', processed)
+            # with open('temp.jpg', 'rb') as f:
+            #    yield (b'--frame\r\n'
+            #           b'Content-Type: image/jpeg\r\n\r\n' +
+            #           f.read() + b'\r\n')
+            ret, jpeg = cv2.imencode('.jpg', processed)
+            content = (b'--frame\r\n'
+                       b'Content-Type: image/jpeg\r\n\r\n' +
+                       jpeg.tobytes() + b'\r\n')
+            content = yield content
+            if content == 'stop':
+                raise ValueError('Stopped!')
 
     log.debug('Closing video capture device')
     cap.release()
