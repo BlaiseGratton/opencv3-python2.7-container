@@ -51,10 +51,10 @@ USER myuser
 # The "/someFolder/youFolder" name could be anything, in this example it is /opt/app
 # It could simply be /app or /wookie/chewbacca or anything, change following commands accordingly
 
-ADD ./app /opt/app/
-WORKDIR /opt/app
+ADD . /app 
+WORKDIR /app
 
 # Running a test file
 # Do project related stuff here
 
-CMD python test.py
+CMD python app.py
