@@ -1,14 +1,50 @@
 html, body {
   height: 100%;
+  margin: 0;
+  padding: 0;
 }
 
-#app {
-  height: 100%`;
-  width: 90%;
+body {
+  display: grid;
+  font-family: 'Spectral SC', serif;
+}
+
+header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 90px;
+  background-color: #37ad6f;
+  color: #fff;
+  border-bottom: 10px solid #28384c;
+}
+
+main {
+  border-top: 5px solid #e6e6e6;
+}
+
+.info-window {
+}
+
+.info-window h2 {
+  display: block;
+  max-width: 320px;
+  margin-left: 22px;
+} 
+
+.info-window img {
+  display: block;
   margin: auto;
-}
+  margin-left: 22px;
+  margin-bottom: 20px;
+} 
 
-#map .vue-map-container {
-  width: 80%;
-  height: 500px;
+footer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 30px;
+  height: 45px;
+  padding: 15px;
+  background-color: #e6e6e6;
 }

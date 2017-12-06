@@ -10,7 +10,7 @@ const map = new Vue({
     message: 'This map',
     cameras: [],
     infoWindows: [],
-    zoom: 8,
+    zoom: 12,
     center: {
       lat: 36.1627,
       lng: -86.7816
@@ -30,12 +30,21 @@ const map = new Vue({
       this.infoWindows.push({
         options: {
           content: `
-            <h1>${camera.description}<h1>
-            <img src="/api/stream?streamUrl=${streamUrl}">
+            <section class="info-window">
+              <h2>${camera.description}</h2>
+              <img @error="alert" src="/api/stream?streamUrl=${streamUrl}">
+            </section>
           `
         },
         position: camera.location.coordinates[0]
       })
+    },
+    alert: function (event, a, b) {
+      debugger
     }
   }
+})
+
+const footer = new Vue({
+  el: '#footer'
 })
