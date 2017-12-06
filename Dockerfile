@@ -57,4 +57,4 @@ WORKDIR /app
 # Running a test file
 # Do project related stuff here
 
-CMD gunicorn app:app -b 0.0.0.0:$PORT  --workers 30 -k eventlet --graceful-timeout 95 --timeout 100
+CMD gunicorn app:app -b 0.0.0.0:$PORT  --workers 20 -k eventlet --graceful-timeout 95 --timeout 100

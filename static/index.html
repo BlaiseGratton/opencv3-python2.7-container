@@ -1,5 +1,6 @@
 <html>
   <head>
+    <title>GOCI&trade;</title>
     <link rel="stylesheet" href="static/main.css">
     <script src="https://unpkg.com/vue"></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
@@ -25,9 +26,7 @@
                           :options="window.options">
         </gmap-info-window>
       </gmap-map>
-      <img @mouseenter="alert" src="/api/stream?streamUrl=rtsp%3A%2F%2F8.15.251.102%2Frtplive%2FR3_075">
     </main>
-
     <footer id="footer">
       &copy; Blaise Gratton &amp; Phillip Ooi {{ new Date().getFullYear() }}
     </footer>
