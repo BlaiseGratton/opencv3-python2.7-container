@@ -37,15 +37,16 @@ class Vehicle(object):
 
     def draw(self, output_image):
         car_color = CAR_COLORS[self.id % len(CAR_COLORS)]
-        for point in self.positions:
-            cv2.circle(output_image, point, 2, car_color, -1)
-            cv2.polylines(
-                output_image,
-                [np.int32(self.positions)],
-                False,
-                car_color,
-                1
-            )
+        if len(self.positions) > 10:
+            for point in self.positions:
+                cv2.circle(output_image, point, 2, car_color, -1)
+                cv2.polylines(
+                    output_image,
+                    [np.int32(self.positions)],
+                    False,
+                    car_color,
+                    1
+                )
 
 
 class VehicleCounter(object):
@@ -144,7 +145,9 @@ class VehicleCounter(object):
             )
 
         for vehicle in self.vehicles:
-            if not vehicle.counted and vehicle.last_position[1] > self.divider:
+            if not vehicle.counted\
+               and vehicle.last_position[1] > self.divider\
+               and len(vehicle.positions) > 10:
                 self.vehicle_count += 1
                 vehicle.counted = True
                 self.log.debug(
@@ -158,10 +161,10 @@ class VehicleCounter(object):
 
             cv2.putText(
                 output_image,
-                ('%02d' % self.vehicle_count),
-                (142, 10),
-                cv2.FONT_HERSHEY_PLAIN,
-                0.7,
+                ('%02d Tracked' % self.vehicle_count),
+                (72, 24),
+                cv2.FONT_HERSHEY_DUPLEX,
+                1.0,
                 (128, 255, 255),
                 1
             )
