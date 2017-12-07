@@ -1,5 +1,6 @@
 import logging
 import math
+import time
 
 import cv2
 import numpy as np
@@ -61,6 +62,8 @@ class VehicleCounter(object):
         self.next_vehicle_id = 0
         self.vehicle_count = 0
         self.max_unseen_frames = 7
+        self.start_time = time.time()
+        self.goci_samples = []
 
     @staticmethod
     def get_vector(a, b):
@@ -144,11 +147,14 @@ class VehicleCounter(object):
                 centroid[1]
             )
 
+        current_goci = self.vehicle_count / (time.time() - self.start_time)
+
         for vehicle in self.vehicles:
             if not vehicle.counted\
                and vehicle.last_position[1] > self.divider\
                and len(vehicle.positions) > 10:
                 self.vehicle_count += 1
+                self.goci_samples.append(current_goci)
                 vehicle.counted = True
                 self.log.debug(
                     'Counted vehicle #%d (total count %d)',
@@ -164,6 +170,19 @@ class VehicleCounter(object):
                 ('%02d Tracked' % self.vehicle_count),
                 (72, 24),
                 cv2.FONT_HERSHEY_DUPLEX,
+                1.0,
+                (128, 255, 255),
+                1
+            )
+
+            avg_goci = sum(self.goci_samples) / len(self.goci_samples)\
+                if len(self.goci_samples) else 0
+
+            cv2.putText(
+                output_image,
+                ('GOCI: %0.2f  Avg: %0.2f' % (current_goci, avg_goci)),
+                (72, 48),
+                cv2.FONT_HERSHEY_COMPLEX_SMALL,
                 1.0,
                 (128, 255, 255),
                 1
