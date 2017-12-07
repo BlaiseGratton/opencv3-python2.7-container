@@ -48,3 +48,31 @@ footer {
   padding: 15px;
   background-color: #e6e6e6;
 }
+
+/* from https://codepen.io/alek/pen/EyyLgp */
+/* explosion container */
+.explosion {
+  position: absolute; /* required if positioned on click else 'relative' */
+  width: 600px;
+  height: 600px;
+  pointer-events: none; /* make it clickable trhough */
+}
+/* particle styling */
+.explosion .particle {
+  position: absolute; /* required  */
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  animation: pop 1s reverse forwards; /* required */
+}
+/* animation for particle fly away from the cursor */
+@keyframes pop {
+  from {
+    opacity: 0;
+  }
+  to {
+    top: 50%;
+    left: 50%;
+    opacity: 1;
+  }
+}
